@@ -1,26 +1,42 @@
-alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+from art import logo
 
-direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
-text = input("Type your message:\n").lower()
-shift = int(input("Type the shift number:\n"))
+alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-#TODO-1: Create a function called 'encrypt' that takes the 'text' and 'shift' as inputs.
-def encrypt(text, shift):
-  encrypted = ""
-  for letter in text:
-    alphabet[letter + shift] += encrypted
-  print(encrypted)
-    #TODO-2: Inside the 'encrypt' function, shift each letter of the 'text' forwards in the alphabet by the shift amount and print the encrypted text.  
-    #e.g. 
-    #plain_text = "hello"
-    #shift = 5
-    #cipher_text = "mjqqt"
-    #print output: "The encoded text is mjqqt"
+def cipher(start_text, shift_amount, cipher_direction):
+  new_text = ""
+  for letter in start_text:
+    if letter not in alphabet:
+      new_text += letter
+    else:
+      position = alphabet.index(letter)
+      if cipher_direction == "encode":
+        new_position = position + shift_amount
+      elif cipher_direction == "decode":
+        new_position = position - shift_amount
+      new_text += alphabet[new_position]
+  print(f"The {cipher_direction}d message is {new_text}")
 
-    ##HINT: How do you get the index of an item in a list:
-    #https://stackoverflow.com/questions/176918/finding-the-index-of-an-item-in-a-list
+print(logo)
 
-    ##🐛Bug alert: What happens if you try to encode the word 'civilization'?🐛
+def check_direction(cipher_direction):
+  while cipher_direction != "decode" and cipher_direction != "encode":
+    cipher_direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
 
-#TODO-3: Call the encrypt function and pass in the user inputs. You should be able to test the code and encrypt a message. 
-encrypt(text, shift)
+choice = ""
+
+while choice != "no":  
+  direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
+  check_direction(direction)
+  text = input("Type your message:\n").lower()
+  shift = int(input("Type the shift number:\n"))
+
+  if shift > 26:
+    shift %= 26
+
+  cipher(text, shift, direction)
+
+  choice = input("Do you want to restar Caesar Cipher? Yes/No ").lower()
+  while choice != "yes" and choice != "no":
+    print("You have to print a valid choice")
+    choice = input("Do you want to restart Caesar Cipher? Yes/No ").lower()
+print("Goodbye!")
